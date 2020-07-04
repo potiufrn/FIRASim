@@ -572,7 +572,7 @@ void SSLWorld::step(dReal dt)
         g->finalizeScene();
 
     sendVisionBuffer();
-    posProcess();
+    //posProcess();
     frame_num++;
     received = false;
 }
