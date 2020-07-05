@@ -203,7 +203,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
         return;
     lastPos = event->pos();
     if (event->buttons() & Qt::LeftButton)
-    {
+    {   
         if (state == 1)
         {
             if (moving_robot_id != -1)
@@ -320,6 +320,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (!ssl->g->isGraphicsEnabled())
         return;
+
     int dx = -(event->x() - lastPos.x());
     int dy = -(event->y() - lastPos.y());
     if (event->buttons() & Qt::LeftButton)
@@ -332,7 +333,10 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     else if (event->buttons() & Qt::MidButton)
     {
         ssl->g->cameraMotion(2, dx, dy);
-    }
+    }else if(event->modifiers() & Qt::ShiftModifier){
+        putBall(ssl->cursor_x, ssl->cursor_y);
+    } 
+    
     lastPos = event->pos();
     update3DCursor(event->x(), event->y());
 }
@@ -473,7 +477,7 @@ void GLWidget::changeCameraMode()
 
 void GLWidget::putBall(dReal x, dReal y)
 {
-    ssl->ball->setBodyPosition(x, y, 0.3);
+    ssl->ball->setBodyPosition(x, y, cfg->BallRadius() * 2);
     dBodySetLinearVel(ssl->ball->body, 0, 0, 0);
     dBodySetAngularVel(ssl->ball->body, 0, 0, 0);
 }
